@@ -1,0 +1,9 @@
+[package]
+name = "rust-fractal-experiments"
+version = "0.1.0"
+authors = ["Marc Farra <marcfarra@gmail.com>"]
+
+[dependencies]
+num = "*"
+image = "*"
+piston_window = "0.38.0"
