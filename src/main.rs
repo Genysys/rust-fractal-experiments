@@ -1,9 +1,11 @@
 extern crate piston_window;
+extern crate piston;
 extern crate num;
 extern crate image;
 
 use image::{ImageBuffer, Rgba};
 use piston_window::{PistonWindow, WindowSettings, Texture, TextureSettings, Image};
+use piston::input::*;
 use num::complex::Complex;
 
 fn hue_to_rgb(i: f32) -> f32 {
@@ -20,7 +22,7 @@ fn hue_to_rgb(i: f32) -> f32 {
     ret * 255.0
 }
 
-fn julia(imgx: u32, imgy: u32, offsetx: f32, offsety: f32, zoom: f32) -> ImageBuffer<Rgba<u8>, Vec<u8>> {
+fn julia(imgx: u32, imgy: u32, offsetx: f32, offsety: f32, zoom: f32, c: Complex<f32>) -> ImageBuffer<Rgba<u8>, Vec<u8>> {
     let max_iterations = 255u16;
     let scalex = zoom / imgx as f32;
     let scaley = zoom / imgy as f32;
@@ -30,7 +32,6 @@ fn julia(imgx: u32, imgy: u32, offsetx: f32, offsety: f32, zoom: f32) -> ImageBu
         let cx = (x as f32 + offsetx) * scalex - (zoom / 2.0);
 
         let mut z = Complex::new(cx, cy);
-        let c = Complex::new(0.4, 0.6);
 
         let mut i = 0;
 
@@ -59,18 +60,25 @@ fn main() {
     let factory = &mut *window.factory.borrow_mut();
 
     // Create a new ImgBuf with width: imgx and height: imgy
-    let mut zoom = 6.0;
+    let zoom = 4.0;
     let offsetx = 0.0;
     let offsety = 0.0;
-    let imgbuf = julia(imgx, imgy, offsetx, offsety, zoom);
+    let mut c_param = Complex::new(0.0, 0.0);
+    let imgbuf = julia(imgx, imgy, offsetx, offsety, zoom, c_param);
     let mut px = Texture::from_image(factory, &imgbuf, &TextureSettings::new()).unwrap();
     let img = Image::new();
     let mut counter = 2;
+
     for e in window.clone() {
         print!("Frame {} {} \r", counter, zoom);
+        e.mouse_cursor(|x, y| {
+            // Truncate mouse values to inside window and normalize
+            let c_re = 2.0 * ((x as f32 - (imgx/2) as f32)) / (imgx as f32);
+            let c_im = 2.0 * ((y as f32 - (imgy/2) as f32)) / (imgy as f32);
+            c_param = Complex::new(c_re, c_im);
+        });
         e.draw_2d(|c, g| {
-            zoom = zoom - zoom/(counter as f32 * 0.2);
-            let imgbuf = julia(imgx, imgy, offsetx, offsety, zoom);
+            let imgbuf = julia(imgx, imgy, offsetx, offsety, zoom, c_param);
             px.update(factory, &imgbuf).unwrap();
             img.draw(&px, &c.draw_state, c.transform, g)
         });

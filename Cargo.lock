@@ -1,9 +1,10 @@
 [root]
-name = "rust-fractal"
+name = "rust-fractal-experiments"
 version = "0.1.0"
 dependencies = [
  "image 0.7.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "num 0.1.31 (registry+https://github.com/rust-lang/crates.io-index)",
+ "piston 0.18.0 (registry+https://github.com/rust-lang/crates.io-index)",
  "piston_window 0.38.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 

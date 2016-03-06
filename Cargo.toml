@@ -6,4 +6,5 @@ authors = ["Marc Farra <marcfarra@gmail.com>"]
 [dependencies]
 num = "*"
 image = "*"
+piston = "*"
 piston_window = "0.38.0"
