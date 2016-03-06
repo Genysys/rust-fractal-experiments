@@ -44,9 +44,9 @@ fn julia(imgx: u32, imgy: u32, offsetx: f32, offsety: f32, zoom: f32, c: Complex
         }
         let lum = i as f32;
 
-        image::Rgba([hue_to_rgb(lum/255.0 + 0.3) as u8,
+        image::Rgba([hue_to_rgb(lum/255.0 - 0.3) as u8,
                     hue_to_rgb(lum/255.0) as u8,
-                    hue_to_rgb(lum/255.0 - 0.3) as u8,
+                    hue_to_rgb(lum/255.0 + 0.3) as u8,
                     255])
     })
 }
