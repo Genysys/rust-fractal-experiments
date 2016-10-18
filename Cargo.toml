@@ -4,7 +4,7 @@ version = "0.1.0"
 authors = ["Marc Farra <marcfarra@gmail.com>"]
 
 [dependencies]
-num = "*"
-image = "*"
-piston = "*"
+num = "0.1.31"
+image = "0.7.0"
+piston = "0.18.0"
 piston_window = "0.38.0"
